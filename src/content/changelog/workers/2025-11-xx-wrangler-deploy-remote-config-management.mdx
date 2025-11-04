@@ -1,0 +1,52 @@
+---
+title: Wrangler deploy - Conveniently deploy your worker with wrangler after it's been updated it in the dashboard
+description: Wrangler now provides a better user experience when deploying a worker that was modified via the Cloudflare dashboard.
+products:
+  - workers
+date: 2025-11-xx
+---
+
+import { WranglerConfig, Aside } from "~/components";
+
+Now `wrangler deploy` provides a better user experience when dealing with a worker that has been modified via the Cloudflare dashboard.
+
+Let's explore an example, let's say that you have a worker with the following configuration:
+<WranglerConfig>
+
+```jsonc title="wrangler.jsonc"
+{
+	"name": "my-worker",
+	"compatibility_date": "$today",
+	"vars": {
+		"MY_VARIABLE_X": "A",
+		"MY_VARIABLE_Y": "B",
+		"MY_VARIABLE_Z": "C",
+	},
+}
+```
+</WranglerConfig>
+
+That you deployed via `wrangler deploy`.
+
+And let's imagine that a coworker or yours of a product manager goes to the [Cloudflare dashboard worker's setting section](https://dash.cloudflare.com/?to=/:account/workers/services/view/:worker/production/settings#variables) and updates `MY_VARIABLE_X` to be `'a'`.
+
+Previously running `wrangler deploy` after such Dashboard update would inform you that the worker's configuration has been updated in the dashboard and would allow you to either override the dashboard configuration or abort the operation.
+
+No other information nor options would be provided to you.
+
+Now in such situation you would instead be presented with a representation of what has been changed, likes so:
+
+```diff
+	"vars": {
+-		"MY_VARIABLE_X": "A",
++		"MY_VARIABLE_X": "a",
+		"MY_VARIABLE_Y": "B",
+		"MY_VARIABLE_Z": "C",
+	},
+```
+
+Allowing you to potentially override the remote settings with more understanding and confidence.
+
+If you instead decide not to override the remote settings Wrangler will also offer to update the local configuration for you so that it can be realigned with the remote settings.
+
+Additionally, note that this flow won't be applied for safe Wrangler deployments that are only adding settings and not removing or modifying and of the remote ones, streamlining the user's exeprience even more.
