@@ -46,7 +46,7 @@ The limits for Browser Rendering will continue to be raised over time. In the me
 | Browser timeout                        | 60 seconds |
 | Total requests per min (REST API only) | 180 per minute [^2] [^3]       |
 
-[^2]: Rate limits are enforced with a fixed **per-second fill rate**. For example, a limit of 180 requests per minute translates to **3 requests per second**. This means you cannot send all 180 requests at once; the API expects them to be spread evenly over the minute. If your account has a custom higher limit, it will also be enforced as a per-second rate.
+[^2]: Rate limits are enforced with a fixed **per-second fill rate**. For example, a limit of 180 requests per minute translates to **3 requests per second**. This means you cannot send all 180 requests at once; the API expects them to be spread evenly over the minute. If your account has a custom higher limit, it will also be enforced at a per-second rate.
 [^3]: Contact our team to request increases to this limit.
 
 :::note[Note on browser timeout]
@@ -84,7 +84,10 @@ If you recently upgraded to the [Workers Paid plan](/workers/platform/pricing/) 
 
 ### Error: `429 Too many requests`
 
-When you make too many requests in a short period of time, Browser Rendering will respond with HTTP status code `429 Too many requests`.
+When you make too many requests in a short period of time, Browser Rendering will respond with HTTP status code `429 Too many requests`. 
+
+Rate limits are enforced with a fixed **per-second fill rate**. For example, a limit of 180 requests per minute translates to **3 requests per second**. This means you cannot send all 180 requests at once; the API expects them to be spread evenly over the minute. If your account has a custom higher limit, it will also be enforced at a per-second rate.
+
 The response includes a `Retry-After` header, which specifies how many seconds to wait before retrying. You can view your account's rate limits on the [Limits](/browser-rendering/platform/limits/) page.
 
 The example below demonstrates how to handle rate limiting gracefully by reading the `Retry-After` value and retrying the request after that delay.
